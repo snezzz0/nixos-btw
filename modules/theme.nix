@@ -3,31 +3,33 @@
     enable = true;
     image = ../walls/12.jpg;
     polarity = "dark";
-    opacity.terminal = 0.85;
+    opacity.terminal = 0.95;
      
     base16Scheme = {
-      base00 = "282828"; # Background
-      base01 = "2a2a2a"; # Lighter Background
-      base02 = "6f6f6f"; # Selection
-      base03 = "8a8a8a"; # Comments
-      base04 = "b0b0b0"; # Muted
-      base05 = "d8d8d8"; # Foreground
-      base06 = "f0f0f0"; # Bright Foreground
+      base00 = "1a1b26"; # Background
+      base01 = "565f89"; # Alt Background
+      base02 = "9aa5ce"; # Selection
+      base03 = "414868"; # Comments (too dark for suggestions!)
+      base04 = "9aa5ce"; # Brightened Comments (Use this for suggestions)
+      base05 = "c0caf5"; # Main Foreground
+      base06 = "d5d6db"; # Bright Foreground
       base07 = "ffffff"; # Brightest
-      base08 = "9d79d6"; # Red -> Changed to Purple
-      base09 = "b392e0"; # Orange -> Light Purple
-      base0A = "b0b0b0"; # Yellow
-      base0B = "9d79d6"; # Green -> Changed to Purple
-      base0C = "8a8a8a"; # Cyan
-      base0D = "9d79d6"; # Blue -> Main Purple
-      base0E = "9d79d6"; # Magenta -> Main Purple
-      base0F = "9d79d6"; # Brown -> Main Purple
+
+      base08 = "f7768e"; # red
+      base09 = "ff9e64"; # orange
+      base0A = "e0af68"; # yellow
+      base0B = "9ece6a"; # green
+      base0C = "4fd6be"; # cyan
+      base0D = "7aa2f7"; # blue
+      base0E = "bb9af7"; # purple
+      base0F = "b16286"; # brown / magenta accent
     };
+
 
     fonts = {
       monospace = {
         package = pkgs.nerd-fonts.jetbrains-mono;
-        name = "JetBrainsMono Nerd Font Mono";
+        name = "JetBrainsMono Nerd Font";
       };
       sansSerif = {
         package = pkgs.dejavu_fonts;
@@ -39,9 +41,9 @@
       };
 
       sizes = {
-        applications = 11;
-        terminal = 11;
-        desktop = 10;
+        applications = 12;
+        terminal = 12;
+        desktop = 11;
       };
     };
   };

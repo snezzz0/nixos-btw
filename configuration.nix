@@ -69,20 +69,19 @@
   # ============================================================================
   # PROGRAMS
   # ============================================================================
+  
+ programs.zsh.enable = true;
 
-  programs.zsh.enable = true;
+ programs.niri.enable = true;
   
-  programs.fuse.userAllowOther = true; # for sshfs
-  
-  programs.niri.enable = true;
-  
-    users.users.adam = {
+ users.users.adam = {
     isNormalUser = true;
     description = "Adam K";
     extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.zsh;
     packages = with pkgs; [];
-  };
+ };
+
   # ============================================================================
   # SYSTEM SETTINGS & PACKAGES
   # ============================================================================
@@ -91,14 +90,13 @@
   nixpkgs.config.allowUnfree = true;
   
   environment.systemPackages = with pkgs; [
-    # Editors & Dev
-    helix
     
     # Terminal & Shell
     kitty
+    neovim
     
     # Window manager & Desktop
-   firefox
+    firefox
     
     # Security & Keyring
     seahorse
@@ -115,6 +113,8 @@
     mpv
     unzip
     feh
+    dunst
+    pavucontrol
   ];
 
   # ============================================================================
