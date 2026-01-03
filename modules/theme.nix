@@ -3,7 +3,7 @@
     enable = true;
     image = ../walls/12.jpg;
     polarity = "dark";
-    opacity.terminal = 0.95;
+    opacity.terminal = 1.0;
      
     base16Scheme = {
       base00 = "1a1b26"; # Background

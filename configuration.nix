@@ -67,16 +67,21 @@
     ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/notes";
     ExecStart = ''
       ${pkgs.rclone}/bin/rclone mount koofr:notes %h/notes \
-        --vfs-cache-mode writes \
+        --vfs-cache-mode full \
+        --vfs-cache-max-size 2G \
+        --vfs-cache-max-age 168h \
+        --dir-cache-time 168h \
+        --poll-interval 15s \
+        --buffer-size 64M \
         --allow-other
     '';
-    ExecStop = "${pkgs.fuse}/bin/fusermount -u %h/notes";
+    ExecStop = "/run/wrappers/bin/fusermount -u %h/notes";
     Restart = "on-failure";
     RestartSec = "10s";
     Type = "notify";
     Environment = "PATH=/run/wrappers/bin:${pkgs.fuse}/bin";
-    };
   };
+};
   
   # ============================================================================
   # PROGRAMS
