@@ -22,7 +22,7 @@
     # Terminal
     kitty eza rclone yazi libqalculate     
     # Desktop / Apps
-    brave obsidian pear-desktop firefox
+    brave pear-desktop firefox
     waybar rofi  wlogout swaybg xwayland-satellite seahorse
     
     # Utils

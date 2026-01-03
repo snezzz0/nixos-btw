@@ -60,19 +60,21 @@
   
   # rclone mount for notes
   systemd.user.services.rclone-notes = {
-    description = "Mount Koofr notes via rclone";
-    wantedBy = [ "default.target" ];
-    after = [ "network-online.target" ];
-    serviceConfig = {
-      ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/notes";
-      ExecStart = ''
-        ${pkgs.rclone}/bin/rclone mount koofr:notes %h/notes \
-          --config /home/adam/nix-config/config/rclone.conf \
-          --vfs-cache-mode writes
-      '';
-      ExecStop = "${pkgs.fuse}/bin/fusermount -u %h/notes";
-      Restart = "on-failure";
-      RestartSec = "10s";
+  description = "Mount Koofr notes via rclone";
+  wantedBy = [ "default.target" ];
+  after = [ "network-online.target" ];
+  serviceConfig = {
+    ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/notes";
+    ExecStart = ''
+      ${pkgs.rclone}/bin/rclone mount koofr:notes %h/notes \
+        --vfs-cache-mode writes \
+        --allow-other
+    '';
+    ExecStop = "${pkgs.fuse}/bin/fusermount -u %h/notes";
+    Restart = "on-failure";
+    RestartSec = "10s";
+    Type = "notify";
+    Environment = "PATH=/run/wrappers/bin:${pkgs.fuse}/bin";
     };
   };
   
@@ -82,7 +84,10 @@
   
  programs.zsh.enable = true;
  programs.niri.enable = true;
-  
+ 
+ # Allow user FUSE mounts
+ programs.fuse.userAllowOther = true;
+
  users.users.adam = {
     isNormalUser = true;
     description = "Adam K";
