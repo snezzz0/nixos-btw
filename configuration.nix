@@ -1,15 +1,12 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running 'nixos-help').
-
 { config, pkgs, ... }:
-
 {
   imports = [
     ./hardware-configuration.nix
     ./modules/theme.nix
   ];
-
   # ============================================================================
   # BOOT
   # ============================================================================
@@ -20,14 +17,12 @@
     efi.canTouchEfiVariables = true;
     grub.enable = false;
   };
-
   # ============================================================================
   # NETWORKING
   # ============================================================================
   
   networking.hostName = "nixos-btw";
   networking.networkmanager.enable = true;
-
   # ============================================================================
   # LOCALIZATION
   # ============================================================================
@@ -46,16 +41,23 @@
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
-
+  # ============================================================================
+  # SECRETS
+  # ============================================================================
+  
+  age.secrets.koofr-rclone = {
+    file = ./secrets/koofr-rclone.age;
+    owner = "adam";
+  };
+ 
+  services.openssh.enable = true;
   # ============================================================================
   # SERVICES
   # ============================================================================
   
   # Display manager
   services.displayManager.ly.enable = true;
-
   services.tumbler.enable = true;
-
   # GNOME services
   services.gnome.gnome-keyring.enable = true;
   services.gvfs.enable = true;
@@ -65,13 +67,30 @@
     layout = "us";
     variant = "";
   };
-
+  
+  # rclone mount for notes
+  systemd.user.services.rclone-notes = {
+    description = "Mount Koofr notes via rclone";
+    wantedBy = [ "default.target" ];
+    after = [ "network-online.target" ];
+    serviceConfig = {
+      ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/notes";
+      ExecStart = ''
+        ${pkgs.rclone}/bin/rclone mount koofr:notes %h/notes \
+          --config ${config.age.secrets.koofr-rclone.path} \
+          --vfs-cache-mode writes
+      '';
+      ExecStop = "${pkgs.fuse}/bin/fusermount -u %h/notes";
+      Restart = "on-failure";
+      RestartSec = "10s";
+    };
+  };
+  
   # ============================================================================
   # PROGRAMS
   # ============================================================================
   
  programs.zsh.enable = true;
-
  programs.niri.enable = true;
   
  users.users.adam = {
@@ -81,16 +100,14 @@
     shell = pkgs.zsh;
     packages = with pkgs; [];
  };
-
   # ============================================================================
   # SYSTEM SETTINGS & PACKAGES
   # ============================================================================
-
   nix.settings.experimental-features = [ "nix-command" "flakes"];
   nixpkgs.config.allowUnfree = true;
   
   environment.systemPackages = with pkgs; [
-    
+   
     # Terminal & Shell
     kitty
     neovim
@@ -116,7 +133,6 @@
     dunst
     pavucontrol
   ];
-
   # ============================================================================
   # FONTS
   # ============================================================================
@@ -125,7 +141,6 @@
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
   ];
-
   # ============================================================================
   # SYSTEM STATE VERSION
   # ============================================================================
