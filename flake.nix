@@ -1,16 +1,13 @@
 {
   description = "NixOS Flake";
-
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     stylix.url = "github:danth/stylix";
-    agenix.url = "github:ryantm/agenix";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-
   outputs = { self, nixpkgs, home-manager, stylix, ... }@inputs: {
     nixosConfigurations.nixos-btw = nixpkgs.lib.nixosSystem {
       specialArgs = { inherit inputs; };
@@ -18,7 +15,6 @@
         ./configuration.nix
         home-manager.nixosModules.home-manager
         inputs.stylix.nixosModules.stylix
-        inputs.agenix.nixosModules.default
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;

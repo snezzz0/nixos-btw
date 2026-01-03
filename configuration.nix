@@ -42,16 +42,6 @@
     LC_TIME = "en_US.UTF-8";
   };
   # ============================================================================
-  # SECRETS
-  # ============================================================================
-  
-  age.secrets.koofr-rclone = {
-    file = ./secrets/koofr-rclone.age;
-    owner = "adam";
-  };
- 
-  services.openssh.enable = true;
-  # ============================================================================
   # SERVICES
   # ============================================================================
   
@@ -77,7 +67,7 @@
       ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/notes";
       ExecStart = ''
         ${pkgs.rclone}/bin/rclone mount koofr:notes %h/notes \
-          --config ${config.age.secrets.koofr-rclone.path} \
+          --config /home/adam/nix-config/config/rclone.conf \
           --vfs-cache-mode writes
       '';
       ExecStop = "${pkgs.fuse}/bin/fusermount -u %h/notes";
@@ -132,6 +122,7 @@
     feh
     dunst
     pavucontrol
+    rclone
   ];
   # ============================================================================
   # FONTS
