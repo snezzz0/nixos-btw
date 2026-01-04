@@ -1,9 +1,4 @@
-{ config, pkgs, lib, ... }: {
-  imports = [
-    ./modules/zsh.nix
-    ./modules/kitty.nix
-  ];
-  
+{ config, pkgs, lib, inputs, ... }: {
   home.username = "adam";
   home.homeDirectory = "/home/adam";
   home.stateVersion = "25.11";
@@ -14,18 +9,6 @@
     name = "Bibata-Modern-Classic"; 
     size = 24;
   };
+  
   programs.home-manager.enable = true;
-  home.packages = with pkgs; [
-    # Dev
-    gcc ripgrep fd rust-analyzer nodejs python3 python3Packages.pip gemini-cli 
-    
-    # Terminal
-    kitty eza rclone yazi libqalculate     
-    # Desktop / Apps
-    brave pear-desktop firefox
-    waybar rofi  wlogout swaybg xwayland-satellite seahorse
-    
-    # Utils
-    wget git stow mpv unzip feh bibata-cursors
-  ];
 }
