@@ -2,6 +2,9 @@
 
 This repository contains the NixOS flake configuration for my personal system (`nixos-btw`).
 
+>[!NOTE]
+This will give you an unconfigured barebones setup. To use my config head over to [my dotfiles repo](https://github.com/snezzz0/dotfiles)
+
 ## Overview
 
 - **OS**: NixOS (Unstable)
