@@ -60,30 +60,6 @@
     variant = "";
   };
   
-  systemd.user.services.rclone-notes = {
-    description = "Mount Koofr notes via rclone";
-    wantedBy = [ "default.target" ];
-    after = [ "network-online.target" ];
-    serviceConfig = {
-      ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/notes";
-      ExecStart = ''
-        ${pkgs.rclone}/bin/rclone mount koofr:notes %h/notes \
-          --vfs-cache-mode full \
-          --vfs-cache-max-size 2G \
-          --vfs-cache-max-age 168h \
-          --dir-cache-time 168h \
-          --poll-interval 15s \
-          --buffer-size 64M \
-          --allow-other
-      '';
-      ExecStop = "/run/wrappers/bin/fusermount -u %h/notes";
-      Restart = "on-failure";
-      RestartSec = "10s";
-      Type = "notify";
-      Environment = "PATH=/run/wrappers/bin:${pkgs.fuse}/bin";
-    };
-  };
-  
   # ============================================================================
   # USER & PACKAGES
   # ============================================================================
@@ -95,14 +71,17 @@
     shell = pkgs.zsh;
     packages = with pkgs; [
       # Dev
-      gcc ripgrep fd rust-analyzer nodejs python3 python3Packages.pip gemini-cli 
+      gcc ripgrep fd rust-analyzer nodejs gemini-cli 
       # Terminal
-      eza rclone yazi libqalculate      
+      eza rclone yazi libqalculate
       # Desktop / Apps
-      brave pear-desktop
+      brave pear-desktop obsidian prismlauncher dbeaver-bin gimp3 
       waybar rofi wlogout swaybg xwayland-satellite
-      # Theming Utils (moved from home-manager)
+      # Theming
       bibata-cursors
+      # System essentials (moved from system packages)
+      kitty neovim firefox seahorse wget git stow glib
+      pulseaudio mpv unzip feh dunst pavucontrol
     ];
   };
 
@@ -122,21 +101,7 @@
   nixpkgs.config.allowUnfree = true;
   
   environment.systemPackages = with pkgs; [
-    kitty
-    neovim
-    firefox
-    seahorse
-    wget
-    git
-    stow
-    glib
-    pulseaudio
-    mpv
-    unzip
-    feh
-    dunst
-    pavucontrol
-    rclone
+    # Minimal system essentials only
   ];
 
   # ============================================================================
