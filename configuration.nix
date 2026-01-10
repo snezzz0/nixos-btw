@@ -1,14 +1,12 @@
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running 'nixos-help').
-
 { config, pkgs, ... }:
-
 {
   imports = [
     ./hardware-configuration.nix
+    ./modules/theme.nix
   ];
-
   # ============================================================================
   # BOOT
   # ============================================================================
@@ -19,14 +17,12 @@
     efi.canTouchEfiVariables = true;
     grub.enable = false;
   };
-
   # ============================================================================
   # NETWORKING
   # ============================================================================
   
   networking.hostName = "nixos-btw";
   networking.networkmanager.enable = true;
-
   # ============================================================================
   # LOCALIZATION
   # ============================================================================
@@ -45,7 +41,6 @@
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
-
   # ============================================================================
   # SERVICES
   # ============================================================================
@@ -63,28 +58,26 @@
   # ============================================================================
   # USER & PACKAGES
   # ============================================================================
-
   users.users.adam = {
     isNormalUser = true;
     description = "Adam K";
     extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.zsh;
     packages = with pkgs; [
-      # Dev
-      gcc ripgrep fd rust-analyzer nodejs gemini-cli 
+      # CLI
+      gcc ripgrep fd rust-analyzer nodejs gemini-cli starship  
       # Terminal
-      eza rclone yazi libqalculate
+      eza rclone yazi libqalculate 
       # Desktop / Apps
       brave pear-desktop obsidian prismlauncher dbeaver-bin gimp3 
-      waybar rofi wlogout swaybg xwayland-satellite
+      rofi wlogout swaybg xwayland-satellite
       # Theming
       bibata-cursors
-      # System essentials (moved from system packages)
+      # System essentials 
       kitty neovim firefox seahorse wget git stow glib
       pulseaudio mpv unzip feh dunst pavucontrol
     ];
   };
-
   # ============================================================================
   # PROGRAMS
   # ============================================================================
@@ -92,7 +85,6 @@
   programs.zsh.enable = true;
   programs.niri.enable = true;
   programs.fuse.userAllowOther = true;
-
   # ============================================================================
   # SYSTEM SETTINGS & PACKAGES
   # ============================================================================
@@ -103,7 +95,6 @@
   environment.systemPackages = with pkgs; [
     # Minimal system essentials only
   ];
-
   # ============================================================================
   # FONTS
   # ============================================================================
@@ -111,7 +102,7 @@
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
+    nerd-fonts.code-new-roman
   ];
-
   system.stateVersion = "25.11";
 }

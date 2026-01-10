@@ -2,31 +2,41 @@
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    autosuggestion.enable = true;
+    autosuggestion = {
+      enable = true;
+      strategy = ["history"];
+    };
     syntaxHighlighting.enable = true;
-
-    initContent = lib.mkMerge [
-      (lib.mkBefore ''
-        # p10k instant prompt
-        if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
-          source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
-        fi
-      '')
-      ''
-        # Load p10k theme
-        source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-        [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-        # Fix for invisible autocompletions (TokyoNight High Contrast)
-        zstyle ':completion:*' menu select
-        zstyle ':completion:*:default' list-colors "''${(s.:.)LS_COLORS}" 'ma=48;5;4;fg=15'
-        zstyle ':completion:*:descriptions' format '%F{#7dcfff}-- %d --%f'
-      ''
-    ];
-
+    
+    history = {
+      size = 10000;
+      save = 10000;
+      path = "$HOME/.zsh_history";
+      ignoreDups = true;
+      ignoreSpace = true;
+      share = true;
+    };
+    
+    initContent = ''
+      # Completion Styling (TokyoNight Fix)
+      zstyle ':completion:*' menu select
+      zstyle ':completion:*:default' list-colors "''${(s.:.)LS_COLORS}" 'ma=48;5;4;fg=15'
+      zstyle ':completion:*:descriptions' format '%F{#7dcfff}-- %d --%f'
+      zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+      
+      # Kitty Integration
+      if test -n "$KITTY_INSTALLATION_DIR"; then
+        export KITTY_SHELL_INTEGRATION="no-rc"
+        autoload -Uz -- "$KITTY_INSTALLATION_DIR"/shell-integration/zsh/kitty-integration
+        kitty-integration
+        unfunction kitty-integration
+      fi
+    '';
+    
     shellAliases = {
       v = "nvim";
       rebuild = "sudo nixos-rebuild switch --flake .#nixos-btw";
+      cd = "z";
       
       c = "clear";
       l = "eza -lh --icons=auto";
@@ -41,6 +51,14 @@
       reboot = "systemctl reboot";
     };
   };
-
-  home.file.".p10k.zsh".source = ../p10k.zsh;
+  
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+  
+  programs.starship = {
+    enable = true;
+    enableZshIntegration = true;
+  };
 }

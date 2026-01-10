@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   stylix = {
     enable = true;
-    image = ../walls/12.jpg;
+    image = null;
     polarity = "dark";
     opacity.terminal = 1.0;
      
@@ -28,8 +28,8 @@
 
     fonts = {
       monospace = {
-        package = pkgs.nerd-fonts.jetbrains-mono;
-        name = "JetBrainsMono Nerd Font";
+        package = pkgs.nerd-fonts.code-new-roman;
+        name = "CodeNewRoman Nerd Font";
       };
       sansSerif = {
         package = pkgs.dejavu_fonts;
@@ -41,9 +41,9 @@
       };
 
       sizes = {
-        applications = 12;
-        terminal = 12;
-        desktop = 11;
+        applications = 14;
+        terminal = 13;
+        desktop = 12;
       };
     };
   };
