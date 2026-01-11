@@ -25,19 +25,19 @@
       };
       
       python = {
-        symbol = " ";
+        symbol = "";
         format = "[$\{symbol}$\{version}]($style) ";
         style = "bold #e0af68";
       };
       
       nodejs = {
-        symbol = " ";
+        symbol = "";
         format = "[$\{symbol}$\{version}]($style) ";
         style = "bold #9ece6a";
       };
       
       cpp = {
-        symbol = " ";
+        symbol = "";
         format = "[$\{symbol}$\{version}]($style) ";
         style = "bold #7aa2f7";
       };
