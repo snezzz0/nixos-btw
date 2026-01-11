@@ -35,7 +35,8 @@
     
     shellAliases = {
       v = "nvim";
-      rebuild = "sudo nixos-rebuild switch --flake .#nixos-btw";
+      rebuildall = "sudo nixos-rebuild switch --flake .#nixos-btw";
+      rebuild = "home-manager switch --flake .#adam";      
       cd = "z";
       
       c = "clear";
