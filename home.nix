@@ -1,9 +1,9 @@
 { config, pkgs, lib, inputs, ... }: 
 {
   imports = [
-    ./modules/kitty.nix
-    ./modules/zsh.nix
-    ./modules/starship.nix
+    # ./modules/kitty.nix
+    # ./modules/zsh.nix
+    # ./modules/starship.nix
     ./modules/dunst.nix
   ];
   
