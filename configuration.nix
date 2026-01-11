@@ -7,6 +7,7 @@
     ./hardware-configuration.nix
     ./modules/theme.nix
   ];
+  
   # ============================================================================
   # BOOT
   # ============================================================================
@@ -17,12 +18,14 @@
     efi.canTouchEfiVariables = true;
     grub.enable = false;
   };
+  
   # ============================================================================
   # NETWORKING
   # ============================================================================
   
   networking.hostName = "nixos-btw";
   networking.networkmanager.enable = true;
+  
   # ============================================================================
   # LOCALIZATION
   # ============================================================================
@@ -41,8 +44,9 @@
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
+  
   # ============================================================================
-  # SERVICES
+  # SYSTEM SERVICES
   # ============================================================================
   
   services.displayManager.ly.enable = true;
@@ -56,47 +60,43 @@
   };
   
   # ============================================================================
-  # USER & PACKAGES
-  # ============================================================================
-  users.users.adam = {
-    isNormalUser = true;
-    description = "Adam K";
-    extraGroups = [ "networkmanager" "wheel" ];
-    shell = pkgs.zsh;
-    packages = with pkgs; [
-      # CLI
-      gcc ripgrep fd rust-analyzer nodejs gemini-cli starship  
-      # Terminal
-      eza rclone yazi libqalculate 
-      # Desktop / Apps
-      brave pear-desktop obsidian prismlauncher dbeaver-bin gimp3 
-      rofi wlogout swaybg xwayland-satellite
-      # Theming
-      bibata-cursors
-      # System essentials 
-      kitty neovim firefox seahorse wget git stow glib
-      pulseaudio mpv unzip feh dunst pavucontrol
-    ];
-  };
-  # ============================================================================
-  # PROGRAMS
+  # SYSTEM PROGRAMS
   # ============================================================================
   
   programs.zsh.enable = true;
   programs.niri.enable = true;
   programs.fuse.userAllowOther = true;
+  
   # ============================================================================
-  # SYSTEM SETTINGS & PACKAGES
+  # USER ACCOUNTS
   # ============================================================================
   
-  nix.settings.experimental-features = [ "nix-command" "flakes"];
+  users.users.adam = {
+    isNormalUser = true;
+    description = "";
+    extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.zsh;
+  };
+  
+  # ============================================================================
+  # NIX SETTINGS
+  # ============================================================================
+  
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config.allowUnfree = true;
   
-  environment.systemPackages = with pkgs; [
-    # Minimal system essentials only
-  ];
   # ============================================================================
-  # FONTS
+  # SYSTEM PACKAGES (minimal essentials only)
+  # ============================================================================
+  
+  environment.systemPackages = with pkgs; [
+    git
+    wget
+    vim  
+  ];
+  
+  # ============================================================================
+  # FONTS (system-wide availability)
   # ============================================================================
   
   fonts.packages = with pkgs; [
@@ -104,5 +104,6 @@
     nerd-fonts.jetbrains-mono
     nerd-fonts.code-new-roman
   ];
+  
   system.stateVersion = "25.11";
 }
