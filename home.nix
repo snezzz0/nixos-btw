@@ -12,6 +12,18 @@
   home.stateVersion = "25.11";
   
   # ============================================================================
+  # CURSOR THEME
+  # ============================================================================
+  
+  home.pointerCursor = {
+    name = "Bibata-Modern-Classic";
+    package = pkgs.bibata-cursors;
+    size = 24; 
+    gtk.enable = true;
+    x11.enable = true;
+  };
+   
+  # ============================================================================
   # USER PACKAGES
   # ============================================================================
   
@@ -24,7 +36,6 @@
     nodejs
     gemini-cli
     opencode
-    neovim
     
     # Terminal Utilities
     eza
@@ -67,6 +78,21 @@
     # System libraries (glib needed by some user apps)
     glib
   ];
+
+
+  programs.neovim = {
+  enable = true;
+  extraPackages = with pkgs; [
+    # The actual Python interpreter
+    python3
+    # Language Server (the "brain")
+    basedpyright
+    # Formatter and Linter (the "tools")
+    ruff
+    # Debugger bridge
+    python3Packages.debugpy
+    ];
+  };
   
   # ============================================================================
   # USER SERVICES
@@ -91,10 +117,7 @@
   
   programs.home-manager.enable = true;
   
-  # Git configuration (user-specific)
   programs.git = {
     enable = true;
-    # userName = "Your Name";      # Uncomment and configure
-    # userEmail = "you@email.com"; # Uncomment and configure
   };
 }

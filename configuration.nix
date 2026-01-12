@@ -92,7 +92,8 @@
   environment.systemPackages = with pkgs; [
     git
     wget
-    vim  
+    vim
+    tmux
   ];
   
   # ============================================================================
